@@ -14,3 +14,7 @@ class lists():
     def get_full_list(self):
         result = json.dumps(self.database.values.tolist())
         return result
+
+    def get_listnames(self):
+        result = self.database['list_name'].unique().tolist()
+        return result

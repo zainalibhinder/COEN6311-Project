@@ -24,4 +24,5 @@ urlpatterns = [
     path('index/', core_views.index),
     path('register/', core_views.register),
     path('search/', core_views.search),
+    path('order/', core_views.order),
 ]

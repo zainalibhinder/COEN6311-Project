@@ -23,12 +23,27 @@ def signup(request):
     template = loader.get_template('signup.html')
     return HttpResponse(template.render({}, request))
 
+def order(request):
+    template = loader.get_template('orders.html')
+    return HttpResponse(template.render({}, request))
+
 def index(request):
     global lists
-    list_content = lists.get_full_list()
+    lists_name = lists.get_listnames()
+    list_chosen = request.GET.get('list_chosen')
+    print(list_chosen)
+    if list_chosen == None:
+        list_transfer = lists.get_full_list()
+        name_display = 'Welcome using the recipe management system!'
+    else:
+        list_transfer = lists.search(list_chosen, 'list_name')
+        name_display = list_chosen
+    print(list_transfer)
     template = loader.get_template('index.html')
     context = {
-        'list_content' : list_content
+        'list_transfer' : list_transfer,
+        'lists_name' : lists_name,
+        'name_display' : name_display,
     }
     return HttpResponse(template.render(context, request))
 
