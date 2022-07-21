@@ -20,4 +20,8 @@ from core import views as core_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', core_views.login),
+    path('signup/', core_views.signup),
+    path('index/', core_views.index),
+    path('register/', core_views.register),
+    path('search/', core_views.search),
 ]

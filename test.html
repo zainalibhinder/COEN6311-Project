@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>动态生成表格</title>
+    <style>
+        #tbl {
+            border-collapse: collapse;
+            margin-top: 5px;
+            width: 500px;
+        }
+
+        table, th, td {
+            border: 1px solid #000;
+        }
+
+        th, td {
+            text-align: center;
+        }
+    </style>
+    <script>
+   window.onload = function(){
+     var gender;
+     var fr = document.form1;
+     var username = fr.username;
+     var age = fr.age;
+     var oBtn = document.getElementById('btn');
+     var tbl = document.getElementById('tbl');
+     var tBody = tbl.tBodies[0];
+     //单击按钮后为表格新增一行数据
+     oBtn.onclick = function(){
+         //创建tr和td元素
+         var tr = document.createElement('tr');
+         var tID = document.createElement('td');
+         tID.setAttribute('class','id');//为ID单元格增加class属性
+         var tUsername = document.createElement('td');
+         var tGender = document.createElement('td');
+         var tAge = document.createElement('td');
+         //校验输入数据的有效性
+         if(!username.value || !age.value){
+              alert('请输入完整内容');
+              return;
+         }
+         if(isNaN(age.value) || age.value<0){
+              alert('请输入正确年龄');
+              return;
+         }
+         //判断是否选择了性别，以及获取所选择的值
+         if(fr.gender[0].checked == true){
+              gender = "女";
+              fr.gender[0].checked = false;
+         }else if(fr.gender[1].checked == true){
+              gender = "男";
+              fr.gender[1].checked = false;
+         }
+         if(gender == null){
+              alert('请选择性别');
+              return;
+         }
+         //为各个单元格添加表单提交的数据
+         tUsername.innerHTML = username.value;
+         tGender.innerHTML = gender;
+         tAge.innerHTML = age.value;
+         //添加删除超链接
+         var tDel = document.createElement('td');
+         tDel.innerHTML = '<a href="javascript:;">删除</a>';
+         //执行删除表格行操作
+         var oA = tDel.children[0];
+         oA.onclick = function(){
+             if(confirm("确定删除吗？")){
+               tBody.removeChild(this.parentNode.parentNode);
+               setId();//重新排序
+             }
+         };
+         //为表格添加单元格和行
+         tr.appendChild(tID);
+         tr.appendChild(tUsername);
+         tr.appendChild(tGender);
+         tr.appendChild(tAge);
+         tr.appendChild(tDel);
+         tBody.appendChild(tr);
+         //设置行序号
+         setId();
+         username.value = age.value='';
+     };
+     //定义行序号
+     function setId () {
+       var tId = tBody.querySelectorAll('.id');
+       for (var i = 0; i < tId.length; i++) {
+            tId[i].innerHTML = i+1;
+       }
+     }
+};
+    </script>
+</head>
+<body>
+    <form name="form1">
+        姓名：<input type="text" name="username" id="username" /><br />
+        性别：<input type="radio" name="gender" />女
+        <input type="radio" name="gender" />男<br />
+        年龄：<input type="text" name="age" id="age" /><br />
+        <input type="button" id='btn' value="添加" />
+    </form>
+    <table id='tbl'>
+        <thead>
+            <tr>
+                <th>序号</th>
+                <th>姓名</th>
+                <th>性别</th>
+                <th>年龄</th>
+                <th>删除</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</body>
+</html>
