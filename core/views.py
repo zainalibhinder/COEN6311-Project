@@ -9,9 +9,11 @@ import sys
 import time
 import pandas as pd
 import sys
+sys.path.append('./core')
+from list_database import lists
 
 users = pd.read_csv("users.csv")
-lists = pd.read_csv("lists.csv")
+lists = lists()
 
 def login(request):
     template = loader.get_template('login.html')
@@ -23,8 +25,7 @@ def signup(request):
 
 def index(request):
     global lists
-    list_content = json.dumps(lists.values.tolist())
-    print(list_content)
+    list_content = lists.get_full_list()
     template = loader.get_template('index.html')
     context = {
         'list_content' : list_content
@@ -48,7 +49,3 @@ def search(request):
     option = request.POST.get('option')
     print(content, option)
     return HttpResponseRedirect("/index/")
-
-#def get_list(request):
-    
-#    return JsonResponse(list_content, safe=False)
