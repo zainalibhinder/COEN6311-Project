@@ -11,8 +11,9 @@ import pandas as pd
 import sys
 sys.path.append('./core')
 from list_database import lists
+from user_database import users
 
-users = pd.read_csv("users.csv")
+users = users()
 lists = lists()
 
 def login(request):
@@ -35,14 +36,12 @@ def index(request):
     global lists
     lists_name = lists.get_listnames()
     list_chosen = request.GET.get('list_chosen')
-    print(list_chosen)
     if list_chosen == None:
         list_transfer = lists.get_full_list()
         name_display = 'Welcome using the recipe management system!'
     else:
         list_transfer = lists.search(list_chosen, 'list_name')
         name_display = list_chosen
-    print(list_transfer)
     template = loader.get_template('index.html')
     context = {
         'list_transfer' : list_transfer,
@@ -52,15 +51,13 @@ def index(request):
     return HttpResponse(template.render(context, request))
 
 def register(request):
-    name = request.POST.get('signup-name')
-    robot_id = request.POST.get('robotID')
-    email = request.POST.get('signup-email')
-    password = request.POST.get('signup-password')
+    name = str(request.POST.get('signup-name'))
+    robot_id = str(request.POST.get('robotID'))
+    email = str(request.POST.get('signup-email'))
+    password = str(request.POST.get('signup-password'))
     record = {'name':name, 'email':email, 'password':password, 'robot_id':robot_id}
-    print(record)
     global users
-    users = users.append(record, ignore_index=True)
-    users.to_csv("users.csv")
+    users.append(record)
     return HttpResponseRedirect("/index/")
 
 def search(request):
@@ -68,3 +65,10 @@ def search(request):
     option = request.POST.get('option')
     print(content, option)
     return HttpResponseRedirect("/index/")
+
+def validate(request):
+    global users
+    email = request.POST.get('signin-email')
+    password = request.POST.get('signin-password')
+    if users.login(email, password):
+        return HttpResponseRedirect("/index/")
