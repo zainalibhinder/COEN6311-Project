@@ -25,4 +25,5 @@ urlpatterns = [
     path('register/', core_views.register),
     path('search/', core_views.search),
     path('order/', core_views.order),
+    path('charts/', core_views.charts),
 ]

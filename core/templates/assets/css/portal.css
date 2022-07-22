@@ -11734,6 +11734,14 @@ button.close:focus {
     min-height: 100%
 }
 
+.banner {
+    background: url("../images/recipes/curry.png") no-repeat center center;
+    background-size: cover;
+    height: 100vh;
+    min-height: 100%
+}
+
+
 .auth-main-col, .auth-background-col {
     position: relative
 }

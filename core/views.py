@@ -27,6 +27,10 @@ def order(request):
     template = loader.get_template('orders.html')
     return HttpResponse(template.render({}, request))
 
+def charts(request):#添加了charts
+    template = loader.get_template('charts.html')
+    return HttpResponse(template.render({}, request))
+
 def index(request):
     global lists
     lists_name = lists.get_listnames()
