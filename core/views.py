@@ -28,9 +28,19 @@ def order(request):
     template = loader.get_template('orders.html')
     return HttpResponse(template.render({}, request))
 
-def charts(request):#添加了charts
-    template = loader.get_template('charts.html')
-    return HttpResponse(template.render({}, request))
+def detail(request):
+    recipe_name = str(request.GET.get('name'))
+    global lists
+    details = lists.get_recipe_detail(recipe_name)
+    print(details[2])
+    context = {
+        'recipe_name' : recipe_name,
+        'list_name' : details[0],
+        'recipe_description' : details[1],
+        'photo_path' : details[2],
+    }
+    template = loader.get_template('detail.html')
+    return HttpResponse(template.render(context, request))
 
 def index(request):
     global lists

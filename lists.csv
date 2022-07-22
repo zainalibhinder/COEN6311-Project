@@ -1,4 +1,4 @@
-﻿list_name,recipe_name,stars,creator,total_time
-Chinese Food,Hotpot,5,Haoyu Lu,30min
-Indian Food,Curry,5,Haoyu Lu,20min
-Canadian Food,Poutine,4,Yuchen Yan,40min
+﻿list_name,recipe_name,stars,creator,total_time,description,photo_path
+Chinese Food,Hotpot,5,Haoyu Lu,30min,"Hot pot or hotpot (simplified Chinese: 火锅; traditional Chinese: 火鍋; pinyin: huǒguō; lit. 'fire pot'), also known as soup-food or steamboat, is a cooking method that originated in China. A heat source on the dining table keeps a pot of soup stock simmering, and a variety of Chinese foodstuffs and ingredients are served beside the pot for the diners to put into the hot stock.",
+Indian Food,Curry,5,Haoyu Lu,20min,"A curry is a dish with a sauce seasoned with spices, mainly associated with South Asian cuisine. In southern India, leaves from the curry tree may be included.",curry.png
+Canadian Food,Poutine,4,Yuchen Yan,40min,"Poutine (Quebec French: [put͡sɪn] (listen)) is a dish of french fries and cheese curds topped with a brown gravy. It emerged in Quebec, in the late 1950s in the Centre-du-Québec region, though its exact origins are uncertain and there are several competing claims regarding its invention. For many years it was perceived negatively and mocked, and even used by some to stigmatize Quebec society. Poutine later became celebrated as a symbol of Québécois culture and the province of Quebec. It has long been associated with Quebec cuisine, and its rise in prominence has led to popularity throughout the rest of Canada, in the northern United States, and internationally.",
