@@ -12,9 +12,11 @@ import sys
 sys.path.append('./core')
 from list_database import lists
 from user_database import users
+from step_database import steps
 
 users = users()
 lists = lists()
+steps = steps()
 
 def login(request):
     template = loader.get_template('login.html')
@@ -32,12 +34,16 @@ def detail(request):
     recipe_name = str(request.GET.get('name'))
     global lists
     details = lists.get_recipe_detail(recipe_name)
-    print(details[2])
+    global steps
+    recipe_step = steps.get_recipe_detail(recipe_name)
     context = {
         'recipe_name' : recipe_name,
         'list_name' : details[0],
         'recipe_description' : details[1],
         'photo_path' : details[2],
+        'total_time' : details[3],
+        'calories' : details[4],
+        'recipe_step' : recipe_step,
     }
     template = loader.get_template('detail.html')
     return HttpResponse(template.render(context, request))

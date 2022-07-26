@@ -20,5 +20,5 @@ class lists():
         return result
 
     def get_recipe_detail(self, recipe_name):
-        result = self.database[self.database["recipe_name"] == recipe_name].loc[:,["list_name", "description", "photo_path"]].values[0]
+        result = self.database[self.database["recipe_name"] == recipe_name].loc[:,["list_name", "description", "photo_path", "total_time", "calories"]].values[0]
         return result
