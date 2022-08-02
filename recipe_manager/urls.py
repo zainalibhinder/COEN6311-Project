@@ -26,4 +26,5 @@ urlpatterns = [
     path('search/', core_views.search),
     path('order/', core_views.order),
     path('detail/', core_views.detail),
+    path('edit/', core_views.edit),
 ]

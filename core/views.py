@@ -88,3 +88,7 @@ def validate(request):
     password = request.POST.get('signin-password')
     if users.login(email, password):
         return HttpResponseRedirect("/index/")
+
+def edit(request):
+    template = loader.get_template('edit.html')
+    return HttpResponse(template.render({}, request))

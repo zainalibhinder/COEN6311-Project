@@ -15,3 +15,8 @@ class users():
     def append(self, record):
         self.database = self.database.append(record, ignore_index=True)
         self.database.to_csv("users.csv")
+
+test = users()
+print(test.database)
+test.database.loc[test.database.name == 'Haoyu Lu', "password"] = "dfjaoife"
+print(test.database)
