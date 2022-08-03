@@ -27,6 +27,121 @@
 		}
 
 	</script>
+	<script>
+		function F_Open_dialog(id) {
+			document.getElementById(id).click();
+		}
+		function imgChange(e, imageid) {
+			console.info(e.target.files[0]);
+			console.log(e.target.value);
+			var reader = new FileReader();
+			reader.onload = (function (file) {
+				return function (e) {
+					console.info(this.result);
+					document.getElementById(imageid).src = this.result;
+				};
+			})(e.target.files[0]);
+			reader.readAsDataURL(e.target.files[0]);
+		}
+
+	</script>
+	<script type="text/javascript">
+		function add() {
+			var li1 = document.getElementById("li1");
+			var lis = document.createElement("lik");
+			var texts = document.createElement('input');
+			texts.setAttribute('type', 'text');
+			texts.setAttribute('name', "step");
+			texts.setAttribute('class', "form-control");
+			texts.setAttribute("placeholder", "new step");
+
+
+			lis.appendChild(texts); 
+			var invite = document.getElementById("invite");
+			invite.insertBefore(lis, li1);
+		}
+		function sub() {
+			var inp = document.getElementsByName("step");
+			var inputs = new Array();
+			for (var i = 0; i < inp.length; i++) {
+				//	alert(inp[i].value);				获得输入框的值
+				inputs[i] = inp[i].value;
+			}
+			alert(inputs);
+		}
+	</script>
+
+	<script type="text/javascript">
+		function add1() {
+			var li2 = document.getElementById("li2");
+			var li3 = document.createElement("li");
+			var texts = document.createElement('input');
+			texts.setAttribute('type', 'text');
+			texts.setAttribute('name', "step");
+			texts.setAttribute('class', "form-control");
+			texts.setAttribute("placeholder", "new spice");
+			//texts.setAttribute(' placeholder', "new step");
+			li3.appendChild(texts);
+			var invite1 = document.getElementById("invite1");
+			invite1.insertBefore(li3, li2);
+		}
+	</script>
+
+	<script>
+		function add2() {
+			var txt1 = document.getElementById('txt1');  
+			var txt2 = document.getElementById('txt2');
+            var txt3 = document.getElementById('txt3'); 
+			var box1 = document.getElementById('box1');
+    
+				          
+				var txt_1 = txt1.value;
+				var txt_2 = txt2.value;  
+                var txt_3 = txt3.value;
+				
+				if ((txt_1 != '') && (txt_2 != '') && (txt_1 != ' ') && (txt_2 != ' ')) {
+					var oTr = document.createElement("tr");
+					var oTd0 = document.createElement('td');
+					var oTd1 = document.createElement('td');
+					var oTd2 = document.createElement('td');
+                    var oTd3 = document.createElement('td');
+					var A = document.createElement('a');
+					oTd3.appendChild(A);
+					oTr.appendChild(oTd0)
+					oTr.appendChild(oTd1);
+					oTr.appendChild(oTd2);
+                    oTr.appendChild(oTd3);
+					box1.appendChild(oTr);
+					A.href = "javascript:viod(0)" 
+					A.innerHTML = 'delete'; 
+
+					for (var i = 0; i < document.links.length; i++) {
+						//console.log(document.links[i]);
+						var I = 0;
+						I = i;
+					}     
+					var Ab = document.links[I];
+					var td_1 = Ab.parentNode.previousSibling;
+					var td_2 = td_1.previousSibling;
+                    var td_3 = td_2.previousSibling;
+					//console.log(td_1,td_2);
+					td_1.innerHTML = txt_3;
+					td_2.innerHTML = txt_2;
+                    td_3.innerHTML = txt_1;
+					for (var a = 0; a < document.links.length; a++) {
+						var Aa = document.links[a];
+						Aa.onclick = function () {
+							this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);
+						}
+					}
+				}
+			}
+
+	</script>
+
+
+
+
 </head>
 
 <body class="app">
@@ -363,8 +478,16 @@
 								<div class="container">
 									<div class="row g-4 settings-section">
 										<div class="col-12 col-md-4">
-											<h3 class="section-title">General</h3>
-											<div class="section-intro">Settings section intro goes here. Lorem ipsum dolor sit amet, consectetur adipiscing elit. <a href="help.html">Learn more</a></div>
+
+											<div>
+												
+											</div>
+											<input type="file" id="btn_file3" name="consignerRdFile" accept="image/jpg,image/jpeg,image/gif,image/png"
+												   style="display:none"
+												   onchange="imgChange(event,'consignerRdSign')">
+											<img id="consignerRdSign" src="/static/images/upload_img.png" width="100px" height="100px"
+												 onclick="F_Open_dialog('btn_file3')">
+											<div>choose the picture(jpg,jpeg,gif,png)</div>
 										</div>
 										<div class="col-12 col-md-8">
 											<div class="app-card app-card-settings shadow-sm p-4">
@@ -401,11 +524,44 @@
 															</div>
 														</div>
 														<div class="mb-3" id="step_container">
-					
+
+
+															<form action="">
+																<p>
+																	steps：<span>（click button to add steps ）</span>
+																	<div id="invite">
+
+																		<input type="text" placeholder="step one" class="form-control" name="step" id="steps">
+																	</div>
+																	<input type="button" class="btn app-btn-primary" style="width: 300px; height: 30px;" value="add" onclick="add()">
+																<p>
+																	spices：<span>（click button to add spices ）</span>
+																	<div id="invite1">
+
+																		<input type="text" placeholder="spice" class="form-control" name="step" id="spices">
+																	</div>
+																	<input id="button" class="btn app-btn-primary" style="width: 300px; height: 30px;" type="button" value=" add" onclick="add1()">
+
+																	<div class="mb">
+																		<label for="">spices：</label>
+																		<input type="text" id="txt1">
+																		<label for="">num：</label>
+																		<input type="text" id="txt2">
+																		<label for="">unit：</label>
+																		<input type="text" id="txt3">
+																		<button id="btn1" onclick="add2()">添加</button>
+																		<table>
+																			<tbody id="box1">
+																			</tbody>
+																		</table>
+																	</div>
+
+
+
+																	<button type="submit" class="btn app-btn-primary">Save Changes</button>
 														</div>
-														<button type="submit" class="btn app-btn-primary">Save Changes</button>
-													</form>
-												</div><!--//app-card-body-->
+
+</div><!--//app-card-body-->
 
 											</div><!--//app-card-->
 										</div>
