@@ -1,4 +1,4 @@
-﻿recipe_name,step,ingredient,quantity,unit,description
+recipe_name,step,ingredient,quantity,unit,description
 Hotpot,1,pepper,100,G,12afaefmn
 Curry,1,"curry,carrot","100,2","G,KG",This is step 1.
 Curry,2,pepper,10,G,This is step 2.

@@ -27,4 +27,5 @@ urlpatterns = [
     path('order/', core_views.order),
     path('detail/', core_views.detail),
     path('edit/', core_views.edit),
+    path('add/', core_views.add),
 ]

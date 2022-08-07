@@ -18,5 +18,10 @@ class steps():
             result.append(row)
         return result
 
-step = steps()
-print(step.get_recipe_detail("Curry"))
+    def add_step(self, recipe_name, step, ingredient, quantity, unit, description):
+        ingredient = ",".join(ingredient)
+        quantity = ",".join(quantity)
+        unit = ",".join(unit)
+        record = {'recipe_name':recipe_name, 'step':step, 'ingredient':ingredient, 'quantity':quantity, 'unit':unit, 'description':description}
+        self.database = self.database.append(record, ignore_index=True)
+        self.database.to_csv("steps.csv", index=False)

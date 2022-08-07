@@ -38,15 +38,15 @@
 	</script>    <!--tian jia fu jian-->
 
 	<script>
-		var i = 1;
+		var i = 0;
 		var step_button = document.createElement('button');
 		step_button.id = "step_button";
 		window.onload = function () {
 			step = document.createElement('div');
-			step.id = "step";
+            step.className = "row mb-3";
             main = document.getElementById("main");
 			step_button.type = "button";
-			step_button.innerHTML = "添加步骤";
+			step_button.innerHTML = "Add Step";
 			step_button.onclick = step_add;
 			main.appendChild(step);
 			main.appendChild(step_button);
@@ -54,37 +54,64 @@
 		}
 
 		function step_add() {
+            i = i + 1;
 			var step_content = document.createElement('div');
-			var spice_button = document.createElement('button');
-			var title = document.createElement('lable');
+			var ingredient_button = document.createElement('button');
+			var title = document.createElement('h4');
 			var description = document.createElement('input');
+			var ingredient_container = document.createElement('div');
+			var title_div = document.createElement('div');
+			var description_div = document.createElement('div');
+            var button_div = document.createElement('div');
+			var head = document.createElement('div');
+			description.name = "step_description_" + String(i);
+            head.className = "row mb-3";
+			title_div.className = "col-12 col-lg-1";
+			description_div.className = "col-12 col-lg-9";
+            button_div.className = "col-12 col-lg-2";
+            step_content.className = "row gx-5 gy-3";
+            title.className = "app-card-title";
+			description.className = "form-control";
             step.appendChild(step_content);
             description.setAttribute("placeholder", "description");
-            title.innerHTML = "Step" + String(i);
-			step_content.appendChild(title);
-			step_content.appendChild(description);
-            spice_button.id = "spice_button";
-            spice_button.type = "button";
-			spice_button.innerHTML = "添加配料";
-			spice_button.onclick = function () {
-                spice_add(step_content);
-			};
-            spice_add(step_content);
-            step_content.appendChild(spice_button);
-			i = i + 1;
+			title.innerHTML = "Step" + String(i);
+			title_div.appendChild(title);
+            description_div.appendChild(description);
+            head.appendChild(title_div);
+			head.appendChild(description_div);
+            ingredient_button.id = "ingredient_button";
+            ingredient_button.type = "button";
+            ingredient_button.innerHTML = "Add ingredient";
+            ingredient_button.onclick = function () {
+                ingredient_add(ingredient_container);
+            };
+			ingredient_add(ingredient_container);
+			button_div.appendChild(ingredient_button);
+            head.appendChild(button_div);
+            step_content.appendChild(head);
+			step_content.appendChild(ingredient_container);
+			
 		}
 
-		function spice_add(step_container) {
-			var spice = document.createElement('input');
-			var quantity = document.createElement('input');
-			var unit = document.createElement('input');
-			spice.setAttribute("placeholder", "spice");
-            quantity.setAttribute("placeholder", "quantity");
-            unit.setAttribute("placeholder", "unit");
-			step_container.appendChild(spice);
-            step_container.appendChild(quantity);
-            step_container.appendChild(unit);
+		function ingredient_add(ingredient_container) {
+            var ingredient_detail = document.createElement('div');
+            ingredient_detail.className = "row mb-3";
+            ingredient_detail.appendChild(ingredient_textbox("ingredient"));
+            ingredient_detail.appendChild(ingredient_textbox("quantity"));
+            ingredient_detail.appendChild(ingredient_textbox("unit"));
+			ingredient_container.appendChild(ingredient_detail);
 		}
+
+		function ingredient_textbox(content) {
+			var textbox = document.createElement('div');
+			var input = document.createElement('input');
+            input.className = "form-control";
+			textbox.className = "col-12 col-lg-4";
+			input.setAttribute("placeholder", content);
+            input.name = content + "_" + String(i);
+			textbox.appendChild(input);
+            return textbox;
+        }
 	</script>
 
 </head>
@@ -421,63 +448,53 @@
 						<div class="app-card app-card-chart h-100 shadow-sm">
 							<div class="container-xxl py-6">
 								<div class="container">
-									<div class="row g-4 settings-section">
-										<div class="col-12 col-md-4">
-
-											<div>
-												
+									<form class="table-search-form row gx-1 align-items-center" action="/add/" method="post">
+										{% csrf_token %}
+										<div class="row g-4 settings-section">
+											<div class="col-12 col-md-4">
+												<input type="file" id="btn_file3" name="consignerRdFile" accept="image/jpg,image/jpeg,image/gif,image/png"
+													   style="display:none"
+													   onchange="imgChange(event,'consignerRdSign')">
+												<img id="consignerRdSign" src="/static/images/upload_img.png" width="100px" height="100px"
+													 onclick="F_Open_dialog('btn_file3')">
+												<div>choose the picture(jpg,jpeg,gif,png)</div>
 											</div>
-											<input type="file" id="btn_file3" name="consignerRdFile" accept="image/jpg,image/jpeg,image/gif,image/png"
-												   style="display:none"
-												   onchange="imgChange(event,'consignerRdSign')">
-											<img id="consignerRdSign" src="/static/images/upload_img.png" width="100px" height="100px"
-												 onclick="F_Open_dialog('btn_file3')">
-											<div>choose the picture(jpg,jpeg,gif,png)</div>
-										</div>
-										<div class="col-12 col-md-8">
-											<div class="app-card app-card-settings shadow-sm p-4">
-												<div class="app-card-body">
-													<form class="table-search-form row gx-1 align-items-center">
+											<div class="col-12 col-md-8">
+												<div class="app-card app-card-settings p-4">
+													<div class="app-card-body">
 														<div class="mb-3">
-															<label for="setting-input-1" class="form-label">
-																List Name<span class="ml-2" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="This is a Bootstrap popover example. You can use popover to provide extra info." data-original-title="" title="">
-																	<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-info-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-																		<path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
-																		<path d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588z"></path>
-																		<circle cx="8" cy="4.5" r="1"></circle>
-																	</svg>
-																</span>
-															</label>
-															<input type="text" class="form-control" id="setting-input-1" required="">
+															<label class="form-label">List Name</label>
+															<input type="text" class="form-control" name="list_name">
 														</div>
 														<div class="mb-3">
-															<label for="setting-input-2" class="form-label">Recipe Name</label>
-															<input type="text" class="form-control" id="setting-input-2" required="">
+															<label class="form-label">Recipe Name</label>
+															<input type="text" class="form-control" name="recipe_name">
 														</div>
 														<div class="mb-3">
-															<label for="setting-input-3" class="form-label">Recipe description</label>
-															<input type="email" class="form-control" id="setting-input-3">
+															<label class="form-label">Recipe description</label>
+															<input type="text" class="form-control" name="recipe_description">
 														</div>
-														<div class="row col-auto mb-3">
+														<div class="row mb-3">
 															<div class="col-auto">
-																<label for="setting-input-3" class="form-label">Recipe description</label>
-																<input type="email" class="form-control" id="setting-input-3">
+																<label class="form-label">Total time</label>
+																<input type="text" class="form-control" name="total_time">
 															</div>
 															<div class="col-auto">
-																<label for="setting-input-3" class="form-label">Recipe description</label>
-																<input type="email" class="form-control" id="setting-input-3">
+																<label class="form-label">Calories</label>
+																<input type="text" class="form-control" name="calories">
 															</div>
 														</div>
-														<div class="mb-3" id="main">
-															<!--在这里调用函数-->
-														</div>
-														<button type="submit" class="btn app-btn-primary">Save Changes</button>
-													</form>
-												</div><!--//app-card-body-->
-											</div><!--//app-card-->
-										</div>
-									</div>
-									<!--//app-card-->
+													</div><!--//app-card-body-->
+												</div><!--//app-card-->
+											</div>
+											<div class="app-card mb-4">
+												<div class="app-card-body p-4" id="main">
+													<!--在这里调用函数-->
+												</div>
+											</div>
+										</div><!--//app-card-->
+										<button type="submit" class="btn app-btn-primary">Save Changes</button>
+									</form>	
 								</div>
 								<!--//col-->
 							</div>

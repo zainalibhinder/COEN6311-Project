@@ -92,3 +92,20 @@ def validate(request):
 def edit(request):
     template = loader.get_template('edit.html')
     return HttpResponse(template.render({}, request))
+
+def add(request):
+    list_name = request.POST.get('list_name')
+    recipe_name = request.POST.get('recipe_name')
+    recipe_description = request.POST.get('recipe_description')
+    total_time = request.POST.get('total_time')
+    calories = request.POST.get('calories')
+    i = 1;
+    while(request.POST.get('step_description_' + str(i)) != None):
+        step_description = request.POST.get('step_description_' + str(i))
+        ingredient = request.POST.getlist('ingredient_' + str(i))
+        quantity = request.POST.getlist('quantity_' + str(i))
+        unit = request.POST.getlist('unit_' + str(i))
+        global steps
+        steps.add_step(recipe_name, i, ingredient, quantity, unit, step_description)
+        i += 1
+    
