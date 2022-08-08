@@ -108,4 +108,4 @@ def add(request):
         global steps
         steps.add_step(recipe_name, i, ingredient, quantity, unit, step_description)
         i += 1
-    
+    return HttpResponseRedirect("/index/")
