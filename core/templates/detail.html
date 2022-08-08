@@ -341,7 +341,7 @@
 	<div class="app-wrapper">
 		<div class="app-content pt-3 p-md-3 p-lg-4">
 			<div class="container-xl">
-				<div class="app-card shadow-sm mb-4 border-left-decoration">
+				<div class="app-card mb-4 border-left-decoration">
 					<div class="inner">
 						<div class="app-card-body p-4">
 
@@ -350,12 +350,12 @@
 					</div>
 					<!--//app-card-->
 					<div class="col-12 auth-background-holder">
-						<div class="app-card app-card-chart h-100 shadow-sm">
+						<div class="app-card app-card-chart h-100">
 							<div class="container-xxl py-6">
 								<div class="container">
 									<div class="row g-5">
 										<div class="col-12 col-lg-6">
-											<div class="app-card app-card-chart h-100 shadow-sm">
+											<div class="app-card app-card-chart h-100">
 												<div class="app-card-body p-4">
 													<img src="{% static 'assets/images/recipes'%}/{{photo_path}}" />
 												</div><!--//app-card-body-->
@@ -369,7 +369,7 @@
 												<!--//表单和表单的的元素名自己去取-->
 												<div class="tab-content" id="orders-table-tab-content">
 													<div class="tab-pane fade show active" id="orders-all" role="tabpanel" aria-labelledby="orders-all-tab">
-														<div class="app-card app-card-orders-table shadow-sm mb-5">
+														<div class="app-card app-card-orders-table mb-5">
 															<div class="app-card-body">
 																<div class="table-responsive">
 																	<table class="table app-table-hover mb-0 text-left" id="list_table">
@@ -386,7 +386,7 @@
 															
 																<div class="panel-body">
 																	{% for step in recipe_step %}
-																	<div class="app-card app-card-basic d-flex flex-column align-items-start shadow-sm">
+																	<div class="app-card app-card-basic d-flex flex-column align-items-start">
 																		<div class="app-card-header p-3 border-bottom-0">
 																			<div class="row align-items-center gx-3">
 																				<div class="col-auto">
@@ -406,6 +406,7 @@
 																	</div>
 																	{% endfor %}
 																</div>
+																<button type="button" class="btn app-btn-secondary">Modify</button>
 															</div>
 														</div>
 													</div>

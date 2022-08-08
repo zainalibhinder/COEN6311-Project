@@ -79,8 +79,16 @@ def register(request):
 def search(request):
     content = request.POST.get('searchcontent')
     option = request.POST.get('option')
-    print(content, option)
-    return HttpResponseRedirect("/index/")
+    global lists
+    lists_name = lists.get_listnames()
+    result = lists.search(content, option)
+    template = loader.get_template('index.html')
+    context = {
+        'list_transfer' : result,
+        'lists_name' : lists_name,
+        'name_display' : 'Search Result',
+    }
+    return HttpResponse(template.render(context, request))
 
 def validate(request):
     global users
@@ -110,6 +118,18 @@ def add(request):
         unit = request.POST.getlist('unit_' + str(i))
         steps.add_step(recipe_name, i, ingredient, quantity, unit, step_description)
         i += 1
-
     return HttpResponseRedirect("/detail?name=" + recipe_name)
+
+def insert_inbetween(request):
+    k=1.1;
+    while(request.POST.get('description'+ str(k)) !=None):
+        recipe_name = str(request.GET.get('name'))
+        insert_description = request.POST.get('description'+ str(k))
+        insert_ingredient = request.POST.get('ingredient'+ str(k))
+        insert_quantity = request.POST.get('quantity'+ str(k))
+        insert_unit = request.POST.get('unit'+ str(k))
+        global steps
+        steps.insert(recipe_name, k ,insert_ingredient ,insert_quantity,insert_unit,insert_description)
+        k +=1
+    return HttpResponseRedirect('/detail/')
 
