@@ -24,4 +24,4 @@ class steps():
         unit = ",".join(unit)
         record = {'recipe_name':recipe_name, 'step':step, 'ingredient':ingredient, 'quantity':quantity, 'unit':unit, 'description':description}
         self.database = self.database.append(record, ignore_index=True)
-        self.database.to_csv("steps.csv", index=False)
+        self.database.to_csv(self.file_path, index=False)

@@ -23,6 +23,8 @@ class lists():
         result = self.database[self.database["recipe_name"] == recipe_name].loc[:,["list_name", "description", "photo_path", "total_time", "calories"]].values[0]
         return result
 
-    def add_recipe(self, list_name, recipe_name, creator, total_time, description, calories):
+    def add_recipe(self, list_name, recipe_name, total_time, description, calories):
         record = {'list_name':list_name, 'recipe_name':recipe_name, 'stars':0, 'creator':'Haoyu Lu', 
                   'total_time':total_time, 'description':description, 'photo_path':None, 'calories':calories}
+        self.database = self.database.append(record, ignore_index=True)
+        self.database.to_csv(self.file_path, index=False)
