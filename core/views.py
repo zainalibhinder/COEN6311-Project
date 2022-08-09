@@ -35,7 +35,7 @@ def detail(request):
     global lists
     details = lists.get_recipe_detail(recipe_name)
     global steps
-    recipe_step = steps.get_recipe_detail(recipe_name)
+    recipe_step = steps.get_recipe_detail(recipe_name, 'html')
     context = {
         'recipe_name' : recipe_name,
         'list_name' : details[0],
@@ -98,8 +98,29 @@ def validate(request):
         return HttpResponseRedirect("/index/")
 
 def edit(request):
+    recipe_name = request.GET.get('name')
+    global lists
+    details = lists.get_recipe_detail(recipe_name)
+    global steps
+    recipe_step = steps.get_recipe_detail(recipe_name, 'js')
+    if recipe_name != None:
+        context = {
+            'status' : True,
+            'recipe_name' : recipe_name,
+            'list_name' : details[0],
+            'recipe_description' : details[1],
+            'photo_path' : details[2],
+            'total_time' : details[3],
+            'calories' : details[4],
+            'recipe_step' : recipe_step,
+        }
+    else:
+        context = {
+            'status' : False,
+        }
     template = loader.get_template('edit.html')
-    return HttpResponse(template.render({}, request))
+    return HttpResponse(template.render(context, request))
+
 
 def add(request):
     list_name = request.POST.get('list_name')
@@ -120,16 +141,4 @@ def add(request):
         i += 1
     return HttpResponseRedirect("/detail?name=" + recipe_name)
 
-def insert_inbetween(request):
-    k=1.1;
-    while(request.POST.get('description'+ str(k)) !=None):
-        recipe_name = str(request.GET.get('name'))
-        insert_description = request.POST.get('description'+ str(k))
-        insert_ingredient = request.POST.get('ingredient'+ str(k))
-        insert_quantity = request.POST.get('quantity'+ str(k))
-        insert_unit = request.POST.get('unit'+ str(k))
-        global steps
-        steps.insert(recipe_name, k ,insert_ingredient ,insert_quantity,insert_unit,insert_description)
-        k +=1
-    return HttpResponseRedirect('/detail/')
 

@@ -383,7 +383,7 @@
 																		</tbody>
 																	</table>
 																</div>
-															
+
 																<div class="panel-body">
 																	{% for step in recipe_step %}
 																	<div class="app-card app-card-basic d-flex flex-column align-items-start">
@@ -406,7 +406,12 @@
 																	</div>
 																	{% endfor %}
 																</div>
-																<button type="button" class="btn app-btn-secondary">Modify</button>
+																<script type="text/javascript">
+																	function button() {
+                                                                        window.location.href = "/edit/?name=" + `{{ recipe_name}}`;
+																	};
+																</script>
+																<button type="button" id="modify_button" class="btn app-btn-secondary" herf="javascript:void(0);" onclick="button()">Modify</button>
 															</div>
 														</div>
 													</div>

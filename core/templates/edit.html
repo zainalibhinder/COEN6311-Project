@@ -38,10 +38,19 @@
 	</script>    <!--tian jia fu jian-->
 
 	<script>
-		var i = 0;
+        var i = 0;
 		var step_button = document.createElement('button');
 		step_button.id = "step_button";
 		window.onload = function () {
+            status = {{status|yesno:"true,false"}};
+			if (status == 'true') {
+				document.getElementById("list_name").value = `{{list_name | safe}}`;
+				document.getElementById("recipe_name").value = `{{recipe_name | safe}}`;
+                document.getElementById("recipe_description").value = `{{recipe_description | safe}}`;
+				document.getElementById("total_time").value = `{{total_time | safe}}`;
+				document.getElementById("calories").value = `{{calories | safe}}`;
+				step_detail = {{ recipe_step | safe }};
+			}
 			step = document.createElement('div');
             step.className = "row mb-3";
             main = document.getElementById("main");
@@ -50,11 +59,14 @@
 			step_button.onclick = step_add;
 			main.appendChild(step);
 			main.appendChild(step_button);
-			step_add.call();
-		}
+			while (step_detail[i] != null) {
+				step_add.call();
+			}
+			status = false;
+		}	
 
 		function step_add() {
-            i = i + 1;
+			j = 0;
 			var step_content = document.createElement('div');
 			var ingredient_button = document.createElement('button');
 			var title = document.createElement('h4');
@@ -64,6 +76,9 @@
 			var description_div = document.createElement('div');
             var button_div = document.createElement('div');
 			var head = document.createElement('div');
+            if (status == 'true') {
+				description.value = step_detail[i][2];
+            }
 			description.name = "step_description_" + String(i);
             head.className = "row mb-3";
 			title_div.className = "col-12 col-lg-1";
@@ -74,7 +89,7 @@
 			description.className = "form-control";
             step.appendChild(step_content);
             description.setAttribute("placeholder", "description");
-			title.innerHTML = "Step" + String(i);
+            title.innerHTML = "Step" + String(i+1);
 			title_div.appendChild(title);
             description_div.appendChild(description);
             head.appendChild(title_div);
@@ -82,33 +97,51 @@
             ingredient_button.id = "ingredient_button";
             ingredient_button.type = "button";
             ingredient_button.innerHTML = "Add ingredient";
-            ingredient_button.onclick = function () {
-                ingredient_add(ingredient_container);
-            };
-			ingredient_add(ingredient_container);
+			ingredient_button.onclick = function () {
+                ingredient_add(ingredient_container, false);
+			};
+			if (status == 'true') {
+				while (step_detail[i][1][0][j] != null) {
+					ingredient_add(ingredient_container, true);
+					j = j + 1;
+				}
+			}
+			if (status != 'true') {
+				ingredient_add(ingredient_container, false);
+			}
 			button_div.appendChild(ingredient_button);
             head.appendChild(button_div);
             step_content.appendChild(head);
 			step_content.appendChild(ingredient_container);
-			
+            i = i + 1;
 		}
 
-		function ingredient_add(ingredient_container) {
+		function ingredient_add(ingredient_container, d_status) {
             var ingredient_detail = document.createElement('div');
-            ingredient_detail.className = "row mb-3";
-            ingredient_detail.appendChild(ingredient_textbox("ingredient"));
-            ingredient_detail.appendChild(ingredient_textbox("quantity"));
-            ingredient_detail.appendChild(ingredient_textbox("unit"));
+			ingredient_detail.className = "row mb-3";
+			if (d_status) {
+                ingredient_detail.appendChild(ingredient_textbox("ingredient", step_detail[i][1][0][j], true));
+                ingredient_detail.appendChild(ingredient_textbox("quantity", step_detail[i][1][1][j], true));
+                ingredient_detail.appendChild(ingredient_textbox("unit", step_detail[i][1][2][j], true));
+			}
+			else {
+                ingredient_detail.appendChild(ingredient_textbox("ingredient"));
+                ingredient_detail.appendChild(ingredient_textbox("quantity"));
+                ingredient_detail.appendChild(ingredient_textbox("unit"));
+            }
 			ingredient_container.appendChild(ingredient_detail);
 		}
 
-		function ingredient_textbox(content) {
+		function ingredient_textbox(content, detail, t_status) {
 			var textbox = document.createElement('div');
 			var input = document.createElement('input');
             input.className = "form-control";
 			textbox.className = "col-12 col-lg-4";
 			input.setAttribute("placeholder", content);
-            input.name = content + "_" + String(i);
+			input.name = content + "_" + String(i);
+			if (t_status) {
+                input.value = detail;
+            }
 			textbox.appendChild(input);
             return textbox;
         }
@@ -464,24 +497,24 @@
 													<div class="app-card-body">
 														<div class="mb-3">
 															<label class="form-label">List Name</label>
-															<input type="text" class="form-control" name="list_name">
+															<input type="text" class="form-control" name="list_name" id="list_name">
 														</div>
 														<div class="mb-3">
 															<label class="form-label">Recipe Name</label>
-															<input type="text" class="form-control" name="recipe_name">
+															<input type="text" class="form-control" name="recipe_name" id="recipe_name">
 														</div>
 														<div class="mb-3">
 															<label class="form-label">Recipe description</label>
-															<input type="text" class="form-control" name="recipe_description">
+															<input type="text" class="form-control" name="recipe_description" id="recipe_description">
 														</div>
 														<div class="row mb-3">
 															<div class="col-auto">
 																<label class="form-label">Total time</label>
-																<input type="text" class="form-control" name="total_time">
+																<input type="text" class="form-control" name="total_time" id="total_time">
 															</div>
 															<div class="col-auto">
 																<label class="form-label">Calories</label>
-																<input type="text" class="form-control" name="calories">
+																<input type="text" class="form-control" name="calories" id="calories">
 															</div>
 														</div>
 													</div><!--//app-card-body-->
