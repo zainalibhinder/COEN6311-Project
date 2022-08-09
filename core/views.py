@@ -134,7 +134,7 @@ def add(request):
     global steps
     global lists
     lists.add_recipe(list_name, recipe_name, total_time, recipe_description, calories)
-    i = 1
+    i = 0
     while(request.POST.get('step_description_' + str(i)) != None):
         step_description = request.POST.get('step_description_' + str(i))
         ingredient = request.POST.getlist('ingredient_' + str(i))
@@ -149,15 +149,16 @@ def add_delete(request):
     global steps
     global lists
     k=request.COOKIES.get('recipe_name')
+    
+    lists.delete_list(k)
     steps.delete_step(k)
-    steps.delete_list(k)
     list_name = request.POST.get('list_name')
     recipe_name = request.POST.get('recipe_name')
     recipe_description = request.POST.get('recipe_description')
     total_time = request.POST.get('total_time')
     calories = request.POST.get('calories')
     lists.add_recipe(list_name, recipe_name, total_time, recipe_description, calories)
-    i = 1
+    i = 0
     while(request.POST.get('step_description_' + str(i)) != None):
         step_description = request.POST.get('step_description_' + str(i))
         ingredient = request.POST.getlist('ingredient_' + str(i))

@@ -30,15 +30,8 @@ class lists():
         self.database.to_csv(self.file_path, index=False)
 
     def delete_list(self,recipe_name):
-         for i in range(len(self.database.loc[self.database.recipe_name == recipe_name,"list_name"])):
-           self.database.drop(self.database.loc[self.database.recipe_name == recipe_name,"list_name"][i])
-         for i in range(len(self.database.loc[self.database.recipe_name == recipe_name,"description"])):
-           self.database.drop(self.database.loc[self.database.recipe_name == recipe_name,"description"][i])
-         for i in range(len(self.database.loc[self.database.recipe_name == recipe_name,"photo_path"])):
-           self.database.drop(self.database.loc[self.database.recipe_name == recipe_name,"photo_path"][i])
-         for i in range(len(self.database.loc[self.database.recipe_name == recipe_name,"total_time"])):
-           self.database.drop(self.database.loc[self.database.recipe_name == recipe_name,"total_time"][i])
-         for i in range(len(self.database.loc[self.database.recipe_name == recipe_name,"calories"])):
-           self.database.drop(self.database.loc[self.database.recipe_name == recipe_name,"calories"][i])
+         
+         self.database =  self.database[self.database.recipe_name != recipe_name]
+          
          
          
