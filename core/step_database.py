@@ -28,3 +28,17 @@ class steps():
         record = {'recipe_name':recipe_name, 'step':step, 'ingredient':ingredient, 'quantity':quantity, 'unit':unit, 'description':description}
         self.database = self.database.append(record, ignore_index=True)
         self.database.to_csv(self.file_path, index=False)
+
+    def delete_step(self,recipe_name):
+        for i in range(len(self.database.loc[self.database.recipe_name == recipe_name,"step"])):
+           self.database.drop(self.database.loc[self.database.recipe_name == recipe_name,"step"][i])
+        for i in range(len(self.database.loc[self.database.recipe_name == recipe_name,"ingredient"])):
+           self.database.drop(self.database.loc[self.database.recipe_name == recipe_name,"ingredient"][i])
+        for i in range(len(self.database.loc[self.database.recipe_name == recipe_name,"quantity"])):
+           self.database.drop(self.database.loc[self.database.recipe_name == recipe_name,"quantity"][i])
+        for i in range(len(self.database.loc[self.database.recipe_name == recipe_name,"unit"])):
+           self.database.drop(self.database.loc[self.database.recipe_name == recipe_name,"unit"][i])
+        for i in range(len(self.database.loc[self.database.recipe_name == recipe_name,"description"])):
+           self.database.drop(self.database.loc[self.database.recipe_name == recipe_name,"description"][i])
+        
+

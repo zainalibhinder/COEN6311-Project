@@ -112,14 +112,17 @@ def edit(request):
             'photo_path' : details[2],
             'total_time' : details[3],
             'calories' : details[4],
-            'recipe_step' : recipe_step,
+            'recipe_step' : recipe_step
         }
     else:
         context = {
             'status' : False,
         }
+    
     template = loader.get_template('edit.html')
-    return HttpResponse(template.render(context, request))
+    response = HttpResponse(template.render(context, request))
+    response.set_cookie('recipe_name',recipe_name)
+    return response
 
 
 def add(request):
@@ -140,5 +143,29 @@ def add(request):
         steps.add_step(recipe_name, i, ingredient, quantity, unit, step_description)
         i += 1
     return HttpResponseRedirect("/detail?name=" + recipe_name)
+
+
+def add_delete(request):
+    global steps
+    global lists
+    k=request.COOKIES.get('recipe_name')
+    steps.delete_step(k)
+    steps.delete_list(k)
+    list_name = request.POST.get('list_name')
+    recipe_name = request.POST.get('recipe_name')
+    recipe_description = request.POST.get('recipe_description')
+    total_time = request.POST.get('total_time')
+    calories = request.POST.get('calories')
+    lists.add_recipe(list_name, recipe_name, total_time, recipe_description, calories)
+    i = 1
+    while(request.POST.get('step_description_' + str(i)) != None):
+        step_description = request.POST.get('step_description_' + str(i))
+        ingredient = request.POST.getlist('ingredient_' + str(i))
+        quantity = request.POST.getlist('quantity_' + str(i))
+        unit = request.POST.getlist('unit_' + str(i))
+        steps.add_step(recipe_name, i, ingredient, quantity, unit, step_description)
+        i += 1
+    return HttpResponseRedirect("/detail?name=" + recipe_name)
+
 
 
