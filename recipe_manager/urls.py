@@ -28,4 +28,6 @@ urlpatterns = [
     path('detail/', core_views.detail),
     path('edit/', core_views.edit),
     path('add/', core_views.add),
+    path('validate/',core_views.validate),
+    path('add_delete/',core_views.add_delete)
 ]
