@@ -15,3 +15,18 @@ class users():
     def append(self, record):
         self.database = self.database.append(record, ignore_index=True)
         self.database.to_csv("users.csv")
+
+    def username(self,email):
+        name = self.database.loc[self.database["email"] == email]["name"].values[0]
+        return name
+    
+    def robot_id(self,email):
+        robot_id = self.database.loc[self.database["email"] == email]["robot_id"].values[0]
+        return robot_id
+    
+        
+    def update(self,name,password,robot_id,email):
+     self.database.loc[self.database.email==email,"name"]=name
+     self.database.loc[self.database.email==email,"password"]=password
+     self.database.loc[self.database.email==email,"robot_id"]=robot_id
+     self.database.to_csv("users.csv")
