@@ -29,5 +29,22 @@ urlpatterns = [
     path('edit/', core_views.edit),
     path('add/', core_views.add),
     path('validate/',core_views.validate),
-    path('add_delete/',core_views.add_delete)
+    path('add_delete/',core_views.add_delete),
+    path('index/account.html', core_views.account),
+    path('index/login.html', core_views.logout),
+    path('index/account1.html', core_views.manage_data),
+    path('change_data/', core_views.change_data),
+    path('edit_2/', core_views.edit_2),
+    path('detail/account.html', core_views.account),
+    path('detail/account1.html', core_views.manage_data),
+    path('edit_2/account.html', core_views.account),
+    path('edit_2/account1.html', core_views.manage_data),
+    path('edit/account.html', core_views.account),
+    path('edit/account1.html', core_views.manage_data),
+    path('detail/login.html', core_views.logout),
+    path('edit/login.html', core_views.logout),
+    path('edit_2/login.html', core_views.logout),
+    path('account/login.html', core_views.logout),
+    path('account1/login.html', core_views.logout)
+
 ]
