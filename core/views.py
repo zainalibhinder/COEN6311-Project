@@ -66,15 +66,7 @@ def index(request):
     }
     return HttpResponse(template.render(context, request))
 
-def register(request):
-    name = str(request.POST.get('signup-name'))
-    robot_id = str(request.POST.get('robotID'))
-    email = str(request.POST.get('signup-email'))
-    password = str(request.POST.get('signup-password'))
-    record = {'name':name, 'email':email, 'password':password, 'robot_id':robot_id}
-    global users
-    users.append(record)
-    return HttpResponseRedirect("/index/")
+
 
 def search(request):
     content = request.POST.get('searchcontent')
@@ -90,14 +82,11 @@ def search(request):
     }
     return HttpResponse(template.render(context, request))
 
-def validate(request):
-    global users
-    email = request.POST.get('signin-email')
-    password = request.POST.get('signin-password')
-    if users.login(email, password):
-        return HttpResponseRedirect("/index/")
-
 def edit(request):
+    template = loader.get_template('edit_2.html')
+    return HttpResponse(template.render({}, request))
+
+def edit_2(request):
     recipe_name = request.GET.get('name')
     global lists
     details = lists.get_recipe_detail(recipe_name)
@@ -131,16 +120,20 @@ def add(request):
     recipe_description = request.POST.get('recipe_description')
     total_time = request.POST.get('total_time')
     calories = request.POST.get('calories')
+    creator_name= request.COOKIES.get('username')
     global steps
     global lists
-    lists.add_recipe(list_name, recipe_name, total_time, recipe_description, calories)
-    i = 0
+    lists.add_recipe(list_name, recipe_name, total_time, recipe_description, calories, creator_name)
+    i = 1
     while(request.POST.get('step_description_' + str(i)) != None):
         step_description = request.POST.get('step_description_' + str(i))
-        ingredient = request.POST.getlist('ingredient_' + str(i))
-        quantity = request.POST.getlist('quantity_' + str(i))
-        unit = request.POST.getlist('unit_' + str(i))
-        steps.add_step(recipe_name, i, ingredient, quantity, unit, step_description)
+        j=0
+        while(request.POST.getlist('ingredient_' + str(j))!=None):
+          ingredient = request.POST.getlist('ingredient_' + str(j))
+          quantity = request.POST.getlist('quantity_' + str(j))
+          unit = request.POST.getlist('unit_' + str(j))
+          steps.add_step(recipe_name, i, ingredient, quantity, unit, step_description)
+          j+=1
         i += 1
     return HttpResponseRedirect("/detail?name=" + recipe_name)
 
@@ -149,7 +142,7 @@ def add_delete(request):
     global steps
     global lists
     k=request.COOKIES.get('recipe_name')
-    
+    creator_name= request.COOKIES.get('username')
     lists.delete_list(k)
     steps.delete_step(k)
     list_name = request.POST.get('list_name')
@@ -157,16 +150,73 @@ def add_delete(request):
     recipe_description = request.POST.get('recipe_description')
     total_time = request.POST.get('total_time')
     calories = request.POST.get('calories')
-    lists.add_recipe(list_name, recipe_name, total_time, recipe_description, calories)
+    lists.add_recipe(list_name, recipe_name, total_time, recipe_description, calories,creator_name)
     i = 0
     while(request.POST.get('step_description_' + str(i)) != None):
         step_description = request.POST.get('step_description_' + str(i))
-        ingredient = request.POST.getlist('ingredient_' + str(i))
-        quantity = request.POST.getlist('quantity_' + str(i))
-        unit = request.POST.getlist('unit_' + str(i))
-        steps.add_step(recipe_name, i, ingredient, quantity, unit, step_description)
+        j=0
+        while(request.POST.getlist('ingredient_' + str(j))!=None):
+          ingredient = request.POST.getlist('ingredient_' + str(j))
+          quantity = request.POST.getlist('quantity_' + str(j))
+          unit = request.POST.getlist('unit_' + str(j))
+          steps.add_step(recipe_name, i, ingredient, quantity, unit, step_description)
+          j+=1
         i += 1
     return HttpResponseRedirect("/detail?name=" + recipe_name)
+
+
+def register(request):
+    name = str(request.POST.get('signup-name'))
+    robot_id = str(request.POST.get('robotID'))
+    email = str(request.POST.get('signup-email'))
+    password = str(request.POST.get('signup-password'))
+    record = {'name':name, 'email':email, 'password':password, 'robot_id':robot_id}
+    global users
+    users.append(record)
+    response = HttpResponseRedirect("/index/")
+    response.set_cookie('name',name)
+    response.set_cookie('robot_id',robot_id)
+    response.set_cookie('email', email)
+    return response
+
+
+
+
+def validate(request):
+    global users
+    email = request.POST.get('signin-email')
+    password = request.POST.get('signin-password')
+    if users.login(email, password):
+        response = HttpResponseRedirect("/index/")
+        response.set_cookie('name',users.username(email))
+        response.set_cookie('email',email)
+        response.set_cookie('robot_id',users.robot_id(email))
+        return response
+        
+
+def account(request):
+    template = loader.get_template('account.html')
+    return HttpResponse(template.render({}, request))
+
+def logout(request):
+    response= HttpResponseRedirect('/')
+    response.delete_cookie('name')
+    response.delete_cookie('email')
+    response.delete_cookie('robot_id')
+    return response
+
+
+def manage_data(request):
+    template = loader.get_template('account1.html')
+    return HttpResponse(template.render({}, request))
+
+def change_data(request):
+    name = str(request.POST.get('change_name'))
+    robot_id = str(request.POST.get('change_robotid'))
+    password = str(request.POST.get('change_password'))
+    email=request.COOKIES['email']
+    users.update(name,password,robot_id,email)
+    return HttpResponseRedirect('/')
 
 
 
